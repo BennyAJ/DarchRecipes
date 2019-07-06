@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+# Install the bare basics, set up my user, and make my user a sudoer
+pacman-key --init
+pacman-key --populate archlinux
+
+pacman -Sy --noconfirm
+
+pacman -S --noconfirm archlinux-keyring
+
+pacman -Syu --noconfirm
+
+pacman -S linux base base-devel sudo --noconfirm
+
+mkinitcpio -p linux
+
+groupadd sudo
+
+touch /etc/sudoers.d/sudogroup
+echo  "%sudo	ALL=(ALL) ALL" > /etc/sudoers.d/sudogroup
+chmod 0440 /etc/sudoers.d/sudogroup
+
+HASHED_PASSWORD='$6$dwgt3Uu9NslE.xq.$m4aA1HQYRgNPAEYQouX06NLqFr9iFJ93S4KO4dQXX196g5pXmYAvoiOHGcWlvYC7rmHZHvxdZOVEJfPaDqvxf0'
+
+useradd -m -G sudo -p $HASHED_PASSWORD benny
+
+pacman -S networkmanager neovim tmux tree htop --noconfirm
+
+systemctl enable NetworkManager.service

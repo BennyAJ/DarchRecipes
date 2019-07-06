@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+pacman -S sddm plasma-meta kde-applications-meta --noconfirm
+
+systemctl enable sddm.service
